@@ -44,6 +44,20 @@ class Problem:
         So, you must return a *list* of actions, where each action
         is a *set* of car/action pairs. 
         """ 
+        moves = []
+        for attendent in self.cars_per_action:
+            for i in range (0, len(state.cars)):
+                car = state.cars[i]
+                if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
+                    moves.append(car)
+                if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < self.n and (car[0] + 1,car[1]) not in state.cars:      
+                    moves.append(car)
+                if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
+                    moves.append(car)
+                if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < self.n and (car[0],car[1] + 1) not in state.cars:   
+                    moves.append(car)
+                    
+                
 
     def result(self, state, action):
         """Return the state that results from executing the given

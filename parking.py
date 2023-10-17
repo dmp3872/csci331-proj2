@@ -45,25 +45,49 @@ class Problem:
         is a *set* of car/action pairs. 
         """ 
         moves = []
-        for attendent in self.cars_per_action:
-            for i in range (0, len(state.cars)):
+        n = len(state.cars)
+        for attendent in range(self.cars_per_action):
+            for i in range(n):
                 car = state.cars[i]
                 if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
-                    moves.append(car)
-                if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < self.n and (car[0] + 1,car[1]) not in state.cars:      
-                    moves.append(car)
+                    moves.append({(i, 'up')})
+                if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
+                    moves.append({(i, 'down')})
                 if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
-                    moves.append(car)
-                if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < self.n and (car[0],car[1] + 1) not in state.cars:   
-                    moves.append(car)
+                    moves.append({(i, 'left')})
+                if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
+                    moves.append({(i, 'right')})
                     
-                
+        # print(moves)
+        return moves
 
     def result(self, state, action):
         """Return the state that results from executing the given
         action in the given state. The action must be one of
         self.actions(state)."""
+        new_pos = ()
+        car = -1
 
+        for move in action:
+            car = move[0]
+            movement = move[1]
+
+            if movement == 'up':
+                new_pos = (state.cars[car][0] - 1, state.cars[car][1])
+            elif movement == 'down':
+                new_pos = (state.cars[car][0] + 1, state.cars[car][1])
+            elif movement == 'left':
+                new_pos = (state.cars[car][0], state.cars[car][1] - 1)
+            elif movement == 'right':
+                new_pos = (state.cars[car][0], state.cars[car][1] + 1)
+
+        new_cars = state.cars
+        if car != -1:
+            new_cars[car] = new_pos
+
+        new_state = State(new_cars, state.barriers)
+
+        return new_state
 
 
     def goal_test(self, state):

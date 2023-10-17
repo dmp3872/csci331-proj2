@@ -23,6 +23,8 @@ class Problem:
             cars_per_action: aka number of attendants, or maximum number
                 of cars that can move on each step.
         """
+        self.initial = initial
+        self.cars_per_action = cars_per_action
         
 
     def actions(self, state):

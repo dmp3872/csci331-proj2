@@ -68,24 +68,32 @@ class Problem:
         new_pos = ()
         car = -1
 
+        print(state)
+
         for move in action:
             car = move[0]
             movement = move[1]
 
             if movement == 'up':
                 new_pos = (state.cars[car][0] - 1, state.cars[car][1])
-            elif movement == 'down':
+            if movement == 'down':
                 new_pos = (state.cars[car][0] + 1, state.cars[car][1])
-            elif movement == 'left':
+            if movement == 'left':
                 new_pos = (state.cars[car][0], state.cars[car][1] - 1)
-            elif movement == 'right':
+            if movement == 'right':
                 new_pos = (state.cars[car][0], state.cars[car][1] + 1)
 
-        new_cars = state.cars
+        # print(state.cars)
+
+        new_cars = state.cars.copy()
         if car != -1:
             new_cars[car] = new_pos
 
-        new_state = State(new_cars, state.barriers)
+        # print(new_cars)
+
+        new_state = State(new_cars, state.barriers.copy())
+
+        # print(new_state)
 
         return new_state
 

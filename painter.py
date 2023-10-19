@@ -21,9 +21,14 @@ def recombine(
 		a randomly-chosen vertical or horizontal line.
 	"""
 	rand = random.randint(0,1)
-	horzSplit = random.randint(0, im1.shape[rand])
-	print(horzSplit)
+	dim = im1.shape[rand]
 
+	randSplit = random.randint(0, dim)
+
+	if rand == 0:
+		im1[randSplit:dim, :, :] = im2[randSplit:dim, :, :]
+	else:
+		im1[:, randSplit:dim, :] = im2[:, randSplit:dim, :]
 
 
 def mutate(im: np.ndarray) -> np.ndarray:
@@ -70,6 +75,8 @@ def main():
 	blue = np.zeros((400,800,3))
 	blue[:,:,2] = 255
 	# uncomment the lines below to view the image
+
+	recombine(red, blue)
 	# plt.imshow(blue)
 	# plt.show() 
 

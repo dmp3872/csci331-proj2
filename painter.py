@@ -20,6 +20,10 @@ def recombine(
 		and then slicing each image into two pieces along
 		a randomly-chosen vertical or horizontal line.
 	"""
+	for i in im1:
+		for j in im1:
+			im1[i,j,0] = 255
+			im2[i,j,2] = 255
 
 def mutate(im: np.ndarray) -> np.ndarray:
 	"""Mutate an image.

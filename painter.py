@@ -20,6 +20,11 @@ def recombine(
 		and then slicing each image into two pieces along
 		a randomly-chosen vertical or horizontal line.
 	"""
+	rand = random.randint(0,1)
+	horzSplit = random.randint(0, im1.shape[rand])
+	print(horzSplit)
+
+
 
 def mutate(im: np.ndarray) -> np.ndarray:
 	"""Mutate an image.
@@ -65,8 +70,8 @@ def main():
 	blue = np.zeros((400,800,3))
 	blue[:,:,2] = 255
 	# uncomment the lines below to view the image
-	#plt.imshow(blue)
-	#plt.show() 
+	# plt.imshow(blue)
+	# plt.show() 
 
 	
 if __name__ == '__main__':

@@ -44,7 +44,10 @@ def mutate(im: np.ndarray) -> np.ndarray:
 		globally (i.e., everywhere it occurs in the image)
 		replace with a randomly chosen new color.
 	"""
+	im = im.astype(int)
 	newcolor = [random.randint(0,255), random.randint(0,255), random.randint(0,255)]
+	print(newcolor)
+	
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
@@ -53,11 +56,18 @@ def mutate(im: np.ndarray) -> np.ndarray:
 
 	print(colors[i])
 
-	x, y, z = np.where(im == colors[i])
+	# x, y, z = np.where(im == colors[i])
 
 	newImage = np.copy(im)
 
-	newImage[x[0]:x[-1], y[0]:y[-1]] = newcolor
+	M, N, C = im.shape
+
+	for k in range(M):
+		for j in range(N):
+			if np.array_equal(newImage[k][j], colors[i]):
+				newImage[k][j] = newcolor
+
+	# newImage[x[0]:x[-1]+1, y[0]:y[-1]+1] = newcolor
 
 	plt.imshow(newImage)
 	plt.waitforbuttonpress(0)
@@ -97,7 +107,6 @@ def main():
 	blue[:,:,2] = 255
 	# uncomment the lines below to view the image
 
-	
 	mutate(recombine(red, blue))
 	# plt.imshow(blue)
 	# plt.show() 

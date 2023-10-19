@@ -29,6 +29,7 @@ def recombine(
 		im1[randSplit:dim, :, :] = im2[randSplit:dim, :, :]
 	else:
 		im1[:, randSplit:dim, :] = im2[:, randSplit:dim, :]
+	return im1
 
 
 def mutate(im: np.ndarray) -> np.ndarray:
@@ -43,6 +44,14 @@ def mutate(im: np.ndarray) -> np.ndarray:
 		globally (i.e., everywhere it occurs in the image)
 		replace with a randomly chosen new color.
 	"""
+	newcolor = [random.randint(0,255), random.randint(0,255), random.randint(0,255)]
+	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
+	colors = [list(x) for x in flatImage]
+	colors = np.unique(colors, axis=0)
+	print(colors)
+	print(colors.size)
+	print(random.randint(0, colors.size))
+
 
 
 def evaluate(im: np.ndarray):
@@ -76,7 +85,8 @@ def main():
 	blue[:,:,2] = 255
 	# uncomment the lines below to view the image
 
-	recombine(red, blue)
+	
+	mutate(red)
 	# plt.imshow(blue)
 	# plt.show() 
 

@@ -45,20 +45,26 @@ class Problem:
         is a *set* of car/action pairs. 
         """ 
         moves = []
+        inner = set()
+
         n = len(state.cars)
-        for attendent in range(self.cars_per_action):
-            for i in range(n):
+        print(n)
+        for attendent in range(0, self.cars_per_action):
+            for i in range(attendent, n-(self.cars_per_action - attendent)):
                 car = state.cars[i]
                 if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
-                    moves.append({(i, 'up')})
+                    inner.add((i, 'up'))
                 if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
-                    moves.append({(i, 'down')})
+                    inner.add((i, 'down'))
                 if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
-                    moves.append({(i, 'left')})
+                    inner.add((i, 'left'))
                 if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
-                    moves.append({(i, 'right')})
+                    inner.add((i, 'right'))
                     
-        # print(moves)
+        moves.append(inner)
+
+        print(moves)
+
         return moves
 
     def result(self, state, action):
@@ -67,8 +73,6 @@ class Problem:
         self.actions(state)."""
         new_pos = ()
         car = -1
-
-        print(state)
 
         for move in action:
             car = move[0]
@@ -398,7 +402,7 @@ def best_first_graph_search(problem, f, display=False):
                 if f(child) < frontier[child]:
                     del frontier[child]
                     frontier.append(child)
-        #pdb.set_trace()
+        # pdb.set_trace()
     return None
 
 def uniform_cost_search(problem, display=False):

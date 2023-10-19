@@ -48,9 +48,21 @@ def mutate(im: np.ndarray) -> np.ndarray:
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
-	print(colors)
-	print(colors.size)
-	print(random.randint(0, colors.size))
+	
+	i = random.randint(0, colors.shape[0]-1)
+
+	print(colors[i])
+
+	x, y, z = np.where(im == colors[i])
+
+	newImage = np.copy(im)
+
+	newImage[x[0]:x[-1], y[0]:y[-1]] = newcolor
+
+	plt.imshow(newImage)
+	plt.waitforbuttonpress(0)
+
+	return newImage
 
 
 
@@ -86,7 +98,7 @@ def main():
 	# uncomment the lines below to view the image
 
 	
-	mutate(red)
+	mutate(recombine(red, blue))
 	# plt.imshow(blue)
 	# plt.show() 
 

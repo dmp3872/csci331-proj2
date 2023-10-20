@@ -60,14 +60,12 @@ class Problem:
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
                 inner[i].append([i, 'right' , (car[0],car[1] + 1)])
             inner[i].append([i, 'stay' , (car[0],car[1])])
-        setMoves = []
         combinations = list(itertools.combinations(inner, self.cars_per_action))
         unique_combinations = []
         for combo in combinations:
             coordinates = set()
             is_valid = True
             for move in combo:  
-                print(move)
                 _, _, (x, y) = move[0]
                 new_coordinate = (x, y)
                 if new_coordinate in coordinates:

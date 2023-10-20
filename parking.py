@@ -53,15 +53,16 @@ class Problem:
         for i in range(0, n):
             car = state.cars[i]
             if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
-                inner[i] = ['up' , [car[0] - 1,car[1]]]
+                inner[i].append(['up' , [car[0] - 1,car[1]]])
             if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
-                inner[i] = ['down' , [car[0] + 1,car[1]]]
+                inner[i].append(['down' , [car[0] + 1,car[1]]])
             if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
-                inner[i] = ['left' , [car[0],car[1] - 1]]
+                inner[i].append(['left' , [car[0],car[1] - 1]])
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
-                inner[i] = ['right' , [car[0],car[1] + 1]]
+                inner[i].append(['right' , [car[0],car[1] + 1]])
                     
-        # for i in range(0, len(state.cars)):
+        for i in range(0, n):
+            
         moves.append(inner)
 
         print(moves)

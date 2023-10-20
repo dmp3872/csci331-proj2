@@ -49,20 +49,38 @@ class Problem:
         inner = [[] for _ in range(n)]
 
         n = len(state.cars)
-        print(n)
         for i in range(0, n):
             car = state.cars[i]
             if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
-                inner[i].append(['up' , [car[0] - 1,car[1]]])
+                inner[i].append([i, 'up' , (car[0] - 1,car[1])])
             if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
-                inner[i].append(['down' , [car[0] + 1,car[1]]])
+                inner[i].append([i, 'down' , (car[0] + 1,car[1])])
             if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
-                inner[i].append(['left' , [car[0],car[1] - 1]])
+                inner[i].append([i, 'left' , (car[0],car[1] - 1)])
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
-                inner[i].append(['right' , [car[0],car[1] + 1]])
+                inner[i].append([i, 'right' , (car[0],car[1] + 1)])
+            inner[i].append([i, 'stay' , (car[0],car[1])])
         setMoves = []
-        combinations = list(itertools.combinations(inner, self.cars_per_action + 1))
-        print(combinations)
+        combinations = list(itertools.combinations(inner, self.cars_per_action))
+        unique_combinations = []
+        for combo in combinations:
+            coordinates = set()
+            is_valid = True
+            for move in combo:  
+                print(move)
+                _, _, (x, y) = move[0]
+                new_coordinate = (x, y)
+                if new_coordinate in coordinates:
+                    is_valid = False
+                    break
+                coordinates.add(new_coordinate)
+            if is_valid:
+                emptySet = set()
+                for i in range(0, self.cars_per_action):
+                    emptySet.add((combo[i][0][0], combo[i][0][1]))
+                    # print('EmptySet: ', emptySet)
+                unique_combinations.append(emptySet)
+        print('Unique: \n', unique_combinations)
 
         moves.append(inner)
 

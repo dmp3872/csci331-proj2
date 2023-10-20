@@ -45,22 +45,23 @@ class Problem:
         is a *set* of car/action pairs. 
         """ 
         moves = []
-        inner = set()
+        n = len(state.cars)
+        inner = [[]] * n
 
         n = len(state.cars)
         print(n)
-        for attendent in range(0, self.cars_per_action):
-            for i in range(attendent, n-(self.cars_per_action - attendent)):
-                car = state.cars[i]
-                if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
-                    inner.add((i, 'up'))
-                if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
-                    inner.add((i, 'down'))
-                if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
-                    inner.add((i, 'left'))
-                if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
-                    inner.add((i, 'right'))
+        for i in range(0, n):
+            car = state.cars[i]
+            if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
+                inner[i] = ['up' , [car[0] - 1,car[1]]]
+            if (car[0] + 1,car[1]) not in state.barriers and car[0] + 1 < n and (car[0] + 1,car[1]) not in state.cars:      
+                inner[i] = ['down' , [car[0] + 1,car[1]]]
+            if (car[0],car[1] - 1) not in state.barriers and car[1] - 1 >= 0 and (car[0],car[1] - 1) not in state.cars:      
+                inner[i] = ['left' , [car[0],car[1] - 1]]
+            if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
+                inner[i] = ['right' , [car[0],car[1] + 1]]
                     
+        # for i in range(0, len(state.cars)):
         moves.append(inner)
 
         print(moves)

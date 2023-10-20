@@ -60,7 +60,10 @@ class Problem:
                 inner[i].append(['left' , [car[0],car[1] - 1]])
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
                 inner[i].append(['right' , [car[0],car[1] + 1]])
-        
+        setMoves = []
+        combinations = list(itertools.combinations(inner, self.cars_per_action + 1))
+        print(combinations)
+
         moves.append(inner)
 
         return moves

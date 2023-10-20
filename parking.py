@@ -46,7 +46,7 @@ class Problem:
         """ 
         moves = []
         n = len(state.cars)
-        inner = [[]] * n
+        inner = [[] for _ in range(n)]
 
         n = len(state.cars)
         print(n)
@@ -60,12 +60,8 @@ class Problem:
                 inner[i].append(['left' , [car[0],car[1] - 1]])
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
                 inner[i].append(['right' , [car[0],car[1] + 1]])
-                    
-        for i in range(0, n):
-            
+        
         moves.append(inner)
-
-        print(moves)
 
         return moves
 

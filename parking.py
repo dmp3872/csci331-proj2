@@ -88,11 +88,13 @@ class Problem:
         new_pos = ()
         car = -1
 
+        print(action)
+
         for move in action:
-            for i in range (0, self.cars_per_action):
-                print(move)
-                car = move[i][0]
-                movement = move[i][1]
+            for m in move:
+                print(m)
+                car = m[0]
+                movement = m[1]
 
                 if movement == 'up':
                     new_pos = (state.cars[car][0] - 1, state.cars[car][1])

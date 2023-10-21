@@ -104,19 +104,33 @@ def main():
 	parser.add_argument('-m', '--mutation', default=.2, help="The chance of a mutation", type=float)
 	parser.add_argument('-r', '--recombine', default = 2, help="The number of pairs to recombine in each generation", type=int)
 	args = parser.parse_args()
+	
+	red = np.zeros((400,800,3))
+	red[:,:,0] = 255
+	# plt.imsave("red.tiff", red/255)
+
+	blue = np.zeros((400,800,3))
+	blue[:,:,2] = 255
+
 	initPool = [0] * args.pools
 	for i in range(args.pools):
 		if i % 2 == 0:
-			initPool[i] = np.zeros((400,800,3))
-			initPool[i][:,:,0] = 255
+			initPool[i] = [np.copy(red), 0]
 		else:
-			initPool[i] = np.zeros((400,800,3))
-			initPool[i][:,:,2] = 255
+			initPool[i] = [np.copy(blue), 0]
 	for i in range(args.generations):
+		for l in range(args.pools):
+			initPool[l][1] = evaluate(initPool[l][0])
+		initPool = sorted(initPool, key=lambda x: x[:][1])
+		for k in range(args.recombine):
+			initPool[k][0] = recombine(initPool[k][0], initPool[k+1][0])
 		for j in range(args.pools):
 			mutateChance = random.uniform(0,1)
 			if mutateChance <= args.mutation:
-				initPool[j] = mutate(initPool[j])
+				initPool[j][0] = mutate(initPool[j][0])
+
+	for i in range(3):
+		plt.imsave("painter_{}.tiff".format(i), float(initPool[i][0]/255))
 
 	# # red = np.zeros((400,800,3))
 	# # red[:,:,0] = 255

@@ -91,7 +91,6 @@ def evaluate(im: np.ndarray):
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
-
 	return colors.shape[0]
 
 def main():
@@ -105,19 +104,32 @@ def main():
 	parser.add_argument('-m', '--mutation', default=.2, help="The chance of a mutation", type=float)
 	parser.add_argument('-r', '--recombine', default = 2, help="The number of pairs to recombine in each generation", type=int)
 	args = parser.parse_args()
+	initPool = [0] * args.pools
+	for i in range(args.pools):
+		if i % 2 == 0:
+			initPool[i] = np.zeros((400,800,3))
+			initPool[i][:,:,0] = 255
+		else:
+			initPool[i] = np.zeros((400,800,3))
+			initPool[i][:,:,2] = 255
+	for i in range(args.generations):
+		for j in range(args.pools):
+			mutateChance = random.uniform(0,1)
+			if mutateChance <= 0.2:
+				initPool[j] = mutate(initPool[j])
 
-	red = np.zeros((400,800,3))
-	red[:,:,0] = 255
-	plt.imsave("red.tiff", red/255)
+	# # red = np.zeros((400,800,3))
+	# # red[:,:,0] = 255
+	# # plt.imsave("red.tiff", red/255)
 
-	blue = np.zeros((400,800,3))
-	blue[:,:,2] = 255
-	# uncomment the lines below to view the image
+	# blue = np.zeros((400,800,3))
+	# blue[:,:,2] = 255
+	# # uncomment the lines below to view the image
 
 	# im1 = recombine(red, blue)
 	# im2 = recombine(blue, red)
 
-	# for i in range(0, 20):
+	# for i in range(0, 5):
 	# 	im1 = mutate(recombine(im1, im2))
 	# 	im2 = mutate(recombine(im2, im1))
 

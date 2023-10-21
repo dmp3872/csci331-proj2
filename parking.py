@@ -77,9 +77,8 @@ class Problem:
                 for i in range(0, self.cars_per_action):
                     emptySet.add((combo[i][0][0], combo[i][0][1]))
                 unique_combinations.append(emptySet)
-        moves.append(unique_combinations)
-
-        return moves
+        
+        return unique_combinations
 
     def result(self, state, action):
         """Return the state that results from executing the given
@@ -88,34 +87,26 @@ class Problem:
         new_pos = ()
         car = -1
 
-        print(action)
+        # print(action)
 
         for move in action:
-            for m in move:
-                print(m)
-                car = m[0]
-                movement = m[1]
+            car = move[0]
+            movement = move[1]
 
-                if movement == 'up':
-                    new_pos = (state.cars[car][0] - 1, state.cars[car][1])
-                if movement == 'down':
-                    new_pos = (state.cars[car][0] + 1, state.cars[car][1])
-                if movement == 'left':
-                    new_pos = (state.cars[car][0], state.cars[car][1] - 1)
-                if movement == 'right':
-                    new_pos = (state.cars[car][0], state.cars[car][1] + 1)
-
-        # print(state.cars)
+            if movement == 'up':
+                new_pos = (state.cars[car][0] - 1, state.cars[car][1])
+            if movement == 'down':
+                new_pos = (state.cars[car][0] + 1, state.cars[car][1])
+            if movement == 'left':
+                new_pos = (state.cars[car][0], state.cars[car][1] - 1)
+            if movement == 'right':
+                new_pos = (state.cars[car][0], state.cars[car][1] + 1)
 
         new_cars = state.cars.copy()
         if car != -1:
             new_cars[car] = new_pos
 
-        # print(new_cars)
-
         new_state = State(new_cars, state.barriers.copy())
-
-        # print(new_state)
 
         return new_state
 

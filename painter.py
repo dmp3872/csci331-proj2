@@ -46,15 +46,15 @@ def mutate(im: np.ndarray) -> np.ndarray:
 	"""
 	im = im.astype(int)
 	newcolor = [random.randint(0,255), random.randint(0,255), random.randint(0,255)]
-	print(newcolor)
-	
+	# print(newcolor)
+
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
 	
 	i = random.randint(0, colors.shape[0]-1)
 
-	print(colors[i])
+	# print(colors[i])
 
 	# x, y, z = np.where(im == colors[i])
 
@@ -69,8 +69,8 @@ def mutate(im: np.ndarray) -> np.ndarray:
 
 	# newImage[x[0]:x[-1]+1, y[0]:y[-1]+1] = newcolor
 
-	plt.imshow(newImage)
-	plt.waitforbuttonpress(0)
+	# plt.imshow(newImage)
+	# plt.waitforbuttonpress(0)
 
 	return newImage
 
@@ -87,6 +87,13 @@ def evaluate(im: np.ndarray):
 		Since art is subjective, you have complete
 		freedom to implement this however you like.
 	"""
+	# select for more more colors
+	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
+	colors = [list(x) for x in flatImage]
+	colors = np.unique(colors, axis=0)
+
+	return colors.shape[0]
+
 def main():
 	parser = argparse.ArgumentParser(
     	prog='painter',
@@ -107,8 +114,16 @@ def main():
 	blue[:,:,2] = 255
 	# uncomment the lines below to view the image
 
-	mutate(recombine(red, blue))
-	# plt.imshow(blue)
+	# im1 = recombine(red, blue)
+	# im2 = recombine(blue, red)
+
+	# for i in range(0, 20):
+	# 	im1 = mutate(recombine(im1, im2))
+	# 	im2 = mutate(recombine(im2, im1))
+
+	# im1 = mutate(recombine(im1, im2))
+	# print(evaluate(im1))
+	# plt.imshow(im1)
 	# plt.show() 
 
 	

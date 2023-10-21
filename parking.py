@@ -92,17 +92,19 @@ class Problem:
         car = -1
 
         for move in action:
-            car = move[0]
-            movement = move[1]
+            for i in range (0, self.cars_per_action):
+                print(move)
+                car = move[i][0]
+                movement = move[i][1]
 
-            if movement == 'up':
-                new_pos = (state.cars[car][0] - 1, state.cars[car][1])
-            if movement == 'down':
-                new_pos = (state.cars[car][0] + 1, state.cars[car][1])
-            if movement == 'left':
-                new_pos = (state.cars[car][0], state.cars[car][1] - 1)
-            if movement == 'right':
-                new_pos = (state.cars[car][0], state.cars[car][1] + 1)
+                if movement == 'up':
+                    new_pos = (state.cars[car][0] - 1, state.cars[car][1])
+                if movement == 'down':
+                    new_pos = (state.cars[car][0] + 1, state.cars[car][1])
+                if movement == 'left':
+                    new_pos = (state.cars[car][0], state.cars[car][1] - 1)
+                if movement == 'right':
+                    new_pos = (state.cars[car][0], state.cars[car][1] + 1)
 
         # print(state.cars)
 

@@ -91,7 +91,22 @@ def evaluate(im: np.ndarray):
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
-	return colors.shape[0]
+
+	horiz_offset = np.zeros_like(im)
+
+	for i in range(horiz_offset.shape[0]):
+		for j in range(horiz_offset.shape[1]):
+			if i < im.shape[0] - 1:
+				horiz_offset[i][j] = im[i+1][j]
+
+	num_lines = 0
+
+	horiz_lines = im - horiz_offset
+	for i in range(horiz_lines.shape[0]):
+		if all(horiz_lines[i][:]) != all([0, 0, 0]):
+			num_lines += 1
+
+	return colors.shape[0] + (num_lines // horiz_lines.shape[1])
 
 def main():
 	parser = argparse.ArgumentParser(
@@ -121,16 +136,23 @@ def main():
 	for i in range(args.generations):
 		for l in range(args.pools):
 			initPool[l][1] = evaluate(initPool[l][0])
-		initPool = sorted(initPool, key=lambda x: x[:][1])
+		initPool = sorted(initPool, key=lambda x: x[:][1], reverse=True)
 		for k in range(args.recombine):
-			initPool[k][0] = recombine(initPool[k][0], initPool[k+1][0])
+			if k < args.pools - 1:
+				initPool[k][0] = recombine(initPool[k][0], initPool[k+1][0])
 		for j in range(args.pools):
 			mutateChance = random.uniform(0,1)
 			if mutateChance <= args.mutation:
 				initPool[j][0] = mutate(initPool[j][0])
 
-	for i in range(3):
-		plt.imsave("painter_{}.tiff".format(i), float(initPool[i][0]/255))
+	for l in range(args.pools):
+		initPool[l][1] = evaluate(initPool[l][0])
+	initPool = sorted(initPool, key=lambda x: x[:][1], reverse=True)
+
+	for i in range(0, 3):
+		# plt.imsave("painter_{}.tiff".format(i), initPool[i][0]/255)
+		plt.imshow(initPool[i][0])
+		plt.waitforbuttonpress(0)
 
 	# # red = np.zeros((400,800,3))
 	# # red[:,:,0] = 255

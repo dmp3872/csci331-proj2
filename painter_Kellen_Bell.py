@@ -103,10 +103,14 @@ def evaluate(im: np.ndarray):
 
 	horiz_lines = im - horiz_offset
 	for i in range(horiz_lines.shape[0]):
-		if all(horiz_lines[i][:]) != all([0, 0, 0]):
-			num_lines += 1
+		for j in range(horiz_lines.shape[1]):
+			if all(horiz_lines[i][j]) != all([0, 0, 0]):
+				num_lines += 1
 
-	return colors.shape[0] + (num_lines // horiz_lines.shape[1])
+	x, y, z = np.where(im == [0, 0, 0])
+	count_black = len(x)
+
+	return colors.shape[0] + (num_lines // horiz_lines.shape[1]) - (count_black // im.shape[1])
 
 def main():
 	parser = argparse.ArgumentParser(
@@ -150,9 +154,9 @@ def main():
 	initPool = sorted(initPool, key=lambda x: x[:][1], reverse=True)
 
 	for i in range(0, 3):
-		# plt.imsave("painter_{}.tiff".format(i), initPool[i][0]/255)
-		plt.imshow(initPool[i][0])
-		plt.waitforbuttonpress(0)
+		plt.imsave("art{}.tiff".format(i+1), initPool[i][0]/255)
+		# plt.imshow(initPool[i][0])
+		# plt.waitforbuttonpress(0)
 
 	# # red = np.zeros((400,800,3))
 	# # red[:,:,0] = 255

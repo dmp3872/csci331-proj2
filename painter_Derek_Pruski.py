@@ -141,8 +141,8 @@ def main():
 
 	for i in range(0, 3):
 		plt.imsave("art{}.tiff".format(i+1), initPool[i][0]/255)
-		plt.imshow(initPool[i][0])
-		plt.waitforbuttonpress(0)
+		# plt.imshow(initPool[i][0])
+		# plt.waitforbuttonpress(0)
 
 	# # red = np.zeros((400,800,3))
 	# # red[:,:,0] = 255

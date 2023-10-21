@@ -95,6 +95,8 @@ def evaluate(im: np.ndarray):
 	for c in colors:
 		if c[2] > 200:
 			blue_score += 1
+		if c[0] > 150:
+			blue_score -= 1
 	return blue_score
 def main():
 	parser = argparse.ArgumentParser(

@@ -60,25 +60,37 @@ class Problem:
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
                 inner[i].append([i, 'right' , (car[0],car[1] + 1)])
             inner[i].append([i, 'stay' , (car[0],car[1])])
-        combinations = list(itertools.combinations(inner, self.cars_per_action))
+        combinations = []
+        for i in range (len(inner)):
+            for j in range(len(inner[i])):
+                combinations.append(inner[i][j])
+        print(combinations)
+        new_combos = list(itertools.combinations(combinations, self.cars_per_action))
         unique_combinations = []
-        for combo in combinations:
+        for combo in new_combos:
             coordinates = set()
+            cars_placed = set()
             is_valid = True
             for move in combo:  
-                _, _, (x, y) = move[0]
+                car_pos, _, (x, y) = move
                 new_coordinate = (x, y)
                 if new_coordinate in coordinates:
                     is_valid = False
                     break
                 coordinates.add(new_coordinate)
+                if car_pos in cars_placed:
+                    is_valid = False
+                    break
+                cars_placed.add(car_pos)
             if is_valid:
                 emptySet = set()
                 for i in range(0, self.cars_per_action):
-                    emptySet.add((combo[i][0][0], combo[i][0][1]))
+                    emptySet.add((combo[i][0], combo[i][1]))
                 unique_combinations.append(emptySet)
+        print('Unique: ', unique_combinations)
         
         return unique_combinations
+
 
     def result(self, state, action):
         """Return the state that results from executing the given
@@ -86,7 +98,6 @@ class Problem:
         self.actions(state)."""
         new_pos = ()
         car = -1
-        print(action)
         new_cars = state.cars.copy()
         for move in action:
             car = move[0]
@@ -102,8 +113,8 @@ class Problem:
             elif movement == 'stay':
                 new_pos = (state.cars[car][0], state.cars[car][1])
             new_cars[car] = new_pos
-
         new_state = State(new_cars, state.barriers.copy())
+        # print(new_state)
         
         return new_state
 
@@ -437,7 +448,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-c', '--cars', default=3, help="The number of cars (and size of lot)", type=int)
 parser.add_argument('-a', '--attendants', default=1, help="The number of attendants (number of cars that can be moved simultaneously)", type=int)
 parser.add_argument('-b', '--barriers', default=0, help="The number of attendants (number of barriers", type=int)
-parser.add_argument('-s', '--search', default="depth_first_tree_search", help="The search algorithm to use", type=str)
+parser.add_argument('-s', '--search', default="depth_first_graph_search", help="The search algorithm to use", type=str)
 
 args = parser.parse_args()
 

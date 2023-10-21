@@ -115,7 +115,7 @@ def main():
 	for i in range(args.generations):
 		for j in range(args.pools):
 			mutateChance = random.uniform(0,1)
-			if mutateChance <= 0.2:
+			if mutateChance <= args.mutation:
 				initPool[j] = mutate(initPool[j])
 
 	# # red = np.zeros((400,800,3))

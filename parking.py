@@ -76,11 +76,8 @@ class Problem:
                 emptySet = set()
                 for i in range(0, self.cars_per_action):
                     emptySet.add((combo[i][0][0], combo[i][0][1]))
-                    # print('EmptySet: ', emptySet)
                 unique_combinations.append(emptySet)
-        print('Unique: \n', unique_combinations)
-
-        moves.append(inner)
+        moves.append(unique_combinations)
 
         return moves
 

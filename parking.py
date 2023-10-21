@@ -3,6 +3,7 @@ from collections import deque
 import functools
 import heapq
 import itertools
+from math import sqrt
 import numpy as np
 import pdb
 import random
@@ -64,7 +65,6 @@ class Problem:
         for i in range (len(inner)):
             for j in range(len(inner[i])):
                 combinations.append(inner[i][j])
-        print(combinations)
         new_combos = list(itertools.combinations(combinations, self.cars_per_action))
         unique_combinations = []
         for combo in new_combos:
@@ -87,7 +87,6 @@ class Problem:
                 for i in range(0, self.cars_per_action):
                     emptySet.add((combo[i][0], combo[i][1]))
                 unique_combinations.append(emptySet)
-        print('Unique: ', unique_combinations)
         
         return unique_combinations
 
@@ -146,7 +145,14 @@ class Problem:
         raise NotImplementedError
 
 def heuristic_dist(node):
-    raise NotImplementedError
+    h = 0
+    n = len(node.state.cars)
+    cars = node.state.cars
+    for i in range(n):
+        h += sqrt((((n-1) - cars[i][0]) ** 2) + ((((n-1-i) - cars[i][1]) ** 2)))
+    return h
+
+
 # ___________________________________________________________________
 # You should not modify anything below the line (except for test
 # purposes, in which case you should repair it to the original state
@@ -448,7 +454,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-c', '--cars', default=3, help="The number of cars (and size of lot)", type=int)
 parser.add_argument('-a', '--attendants', default=1, help="The number of attendants (number of cars that can be moved simultaneously)", type=int)
 parser.add_argument('-b', '--barriers', default=0, help="The number of attendants (number of barriers", type=int)
-parser.add_argument('-s', '--search', default="depth_first_graph_search", help="The search algorithm to use", type=str)
+parser.add_argument('-s', '--search', default="depth_first_tree_search", help="The search algorithm to use", type=str)
 
 args = parser.parse_args()
 

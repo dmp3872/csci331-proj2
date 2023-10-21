@@ -86,28 +86,25 @@ class Problem:
         self.actions(state)."""
         new_pos = ()
         car = -1
-
-        # print(action)
-
+        print(action)
+        new_cars = state.cars.copy()
         for move in action:
             car = move[0]
             movement = move[1]
-
             if movement == 'up':
                 new_pos = (state.cars[car][0] - 1, state.cars[car][1])
-            if movement == 'down':
+            elif movement == 'down':
                 new_pos = (state.cars[car][0] + 1, state.cars[car][1])
-            if movement == 'left':
+            elif movement == 'left':
                 new_pos = (state.cars[car][0], state.cars[car][1] - 1)
-            if movement == 'right':
+            elif movement == 'right':
                 new_pos = (state.cars[car][0], state.cars[car][1] + 1)
-
-        new_cars = state.cars.copy()
-        if car != -1:
+            elif movement == 'stay':
+                new_pos = (state.cars[car][0], state.cars[car][1])
             new_cars[car] = new_pos
 
         new_state = State(new_cars, state.barriers.copy())
-
+        
         return new_state
 
 

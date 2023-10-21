@@ -140,7 +140,7 @@ def main():
 	initPool = sorted(initPool, key=lambda x: x[:][1], reverse=True)
 
 	for i in range(0, 3):
-		# plt.imsave("painter_{}.tiff".format(i), initPool[i][0]/255)
+		plt.imsave("art{}.tiff".format(i+1), initPool[i][0]/255)
 		plt.imshow(initPool[i][0])
 		plt.waitforbuttonpress(0)
 

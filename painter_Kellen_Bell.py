@@ -46,17 +46,12 @@ def mutate(im: np.ndarray) -> np.ndarray:
 	"""
 	im = im.astype(int)
 	newcolor = [random.randint(0,255), random.randint(0,255), random.randint(0,255)]
-	# print(newcolor)
 
 	flatImage = im.reshape(im.shape[0] * im.shape[1], 3)
 	colors = [list(x) for x in flatImage]
 	colors = np.unique(colors, axis=0)
 	
 	i = random.randint(0, colors.shape[0]-1)
-
-	# print(colors[i])
-
-	# x, y, z = np.where(im == colors[i])
 
 	newImage = np.copy(im)
 
@@ -66,11 +61,6 @@ def mutate(im: np.ndarray) -> np.ndarray:
 		for j in range(N):
 			if np.array_equal(newImage[k][j], colors[i]):
 				newImage[k][j] = newcolor
-
-	# newImage[x[0]:x[-1]+1, y[0]:y[-1]+1] = newcolor
-
-	# plt.imshow(newImage)
-	# plt.waitforbuttonpress(0)
 
 	return newImage
 
@@ -126,7 +116,6 @@ def main():
 	
 	red = np.zeros((400,800,3))
 	red[:,:,0] = 255
-	# plt.imsave("red.tiff", red/255)
 
 	blue = np.zeros((400,800,3))
 	blue[:,:,2] = 255
@@ -155,28 +144,6 @@ def main():
 
 	for i in range(0, 3):
 		plt.imsave("art{}.tiff".format(i+1), initPool[i][0]/255)
-		# plt.imshow(initPool[i][0])
-		# plt.waitforbuttonpress(0)
-
-	# # red = np.zeros((400,800,3))
-	# # red[:,:,0] = 255
-	# # plt.imsave("red.tiff", red/255)
-
-	# blue = np.zeros((400,800,3))
-	# blue[:,:,2] = 255
-	# # uncomment the lines below to view the image
-
-	# im1 = recombine(red, blue)
-	# im2 = recombine(blue, red)
-
-	# for i in range(0, 5):
-	# 	im1 = mutate(recombine(im1, im2))
-	# 	im2 = mutate(recombine(im2, im1))
-
-	# im1 = mutate(recombine(im1, im2))
-	# print(evaluate(im1))
-	# plt.imshow(im1)
-	# plt.show() 
 
 	
 if __name__ == '__main__':

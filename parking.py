@@ -9,6 +9,11 @@ import pdb
 import random
 import sys
 import time 
+"""
+Derek Pruski (dmp3872) and Kellen Bell (kdb9520)
+Project 2
+parking.py
+"""
 
 
 class Problem:
@@ -24,6 +29,7 @@ class Problem:
             cars_per_action: aka number of attendants, or maximum number
                 of cars that can move on each step.
         """
+        # intitalize starting state and # of attendents
         self.initial = initial
         self.cars_per_action = cars_per_action
         
@@ -49,7 +55,7 @@ class Problem:
         n = len(state.cars)
         inner = [[] for _ in range(n)]
 
-        n = len(state.cars)
+        # start looping through each car and [car #, move, new coordinate] to corresponding inner index car 0 = inner[0].append
         for i in range(0, n):
             car = state.cars[i]
             if (car[0] - 1,car[1]) not in state.barriers and car[0] - 1 >= 0 and (car[0] - 1,car[1]) not in state.cars:           
@@ -61,11 +67,16 @@ class Problem:
             if (car[0],car[1] + 1) not in state.barriers and car[1] + 1 < n and (car[0],car[1] + 1) not in state.cars:   
                 inner[i].append([i, 'right' , (car[0],car[1] + 1)])
             inner[i].append([i, 'stay' , (car[0],car[1])])
+
+        # put all combinations into a 1D array combinations
         combinations = []
         for i in range (len(inner)):
             for j in range(len(inner[i])):
                 combinations.append(inner[i][j])
+
+        # Create all possible move combinations using combinations and # of cars per combination cars_per_action
         new_combos = list(itertools.combinations(combinations, self.cars_per_action))
+        # Loop through and ensure all combinations are valid
         unique_combinations = []
         for combo in new_combos:
             coordinates = set()
@@ -74,20 +85,24 @@ class Problem:
             for move in combo:  
                 car_pos, _, (x, y) = move
                 new_coordinate = (x, y)
+                # check to make sure cars are not moving to the same coordinate
                 if new_coordinate in coordinates:
                     is_valid = False
                     break
                 coordinates.add(new_coordinate)
+                # check to make sure the same car is not moving more then once
                 if car_pos in cars_placed:
                     is_valid = False
                     break
                 cars_placed.add(car_pos)
+            # Once validated add the car,move set to the unique_combinations
             if is_valid:
                 emptySet = set()
                 for i in range(0, self.cars_per_action):
                     emptySet.add((combo[i][0], combo[i][1]))
                 unique_combinations.append(emptySet)
-        
+
+        # return action pairs
         return unique_combinations
 
 
@@ -97,10 +112,13 @@ class Problem:
         self.actions(state)."""
         new_pos = ()
         car = -1
+        # create a copy of the cars current state
         new_cars = state.cars.copy()
+        # loop through move in the action set
         for move in action:
             car = move[0]
             movement = move[1]
+            # check the movement and update the cars coordinates
             if movement == 'up':
                 new_pos = (state.cars[car][0] - 1, state.cars[car][1])
             elif movement == 'down':
@@ -111,9 +129,11 @@ class Problem:
                 new_pos = (state.cars[car][0], state.cars[car][1] + 1)
             elif movement == 'stay':
                 new_pos = (state.cars[car][0], state.cars[car][1])
+            # update the car in the new state
             new_cars[car] = new_pos
+
+        # create a new state with the updated cars and same barriers
         new_state = State(new_cars, state.barriers.copy())
-        # print(new_state)
         
         return new_state
 
@@ -145,9 +165,15 @@ class Problem:
         raise NotImplementedError
 
 def heuristic_dist(node):
+    """This function creates a hueristic distance to the goal state for the cars
+    in the current node. To calculate the heuristic distance we take the goal car
+    point and subtract it from the current car point. Then applying a^2 + b^2 == c^2
+    to find the diagonal distance. The heuristic distance for each car is added to
+    an accumulator h and returned to the caller."""
     h = 0
     n = len(node.state.cars)
     cars = node.state.cars
+    # loop through each car and find the diagonal distance to the goal state.
     for i in range(n):
         h += sqrt((((n-1) - cars[i][0]) ** 2) + ((((n-1-i) - cars[i][1]) ** 2)))
     return h
